@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<meta content="email=no" name="format-detection">
+		<meta name="description" content="中集冷云冷链运输微信下单平台" />
+		<meta name="keywords" content="微信下单，冷链运输 " />
+		<meta name=" author " content="中集冷云 " />
+		<title>手机号绑定</title>
+		<link rel="stylesheet " href="css/base.css ">
+		<link rel="stylesheet" href="css/toastr.min.css" />
+		<link rel="stylesheet " href="css/jquery.idcode.css">
+	</head>
+	<style>
+		body {
+			background: url(img/loginbg.jpg) center 0 no-repeat;
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+			position: absolute;
+			z-index: -1;
+			filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='img/loginbg.jpg', sizingMethod='scale');
+		}
+		
+		.banner {
+			width: 100%;
+			height: auto;
+			margin: 2rem 0 0.8rem;
+			text-align: center;
+		}
+		
+		.logo {
+			margin: 0 auto;
+			display: block;
+			height: 0.46rem;
+			width: 3.13rem;
+		}
+		
+		.formdata {
+			width: 100%;
+			height: auto;
+			padding: 0 1rem;
+			box-sizing: border-box;
+		}
+		
+		.line {
+			width: 100%;
+			height: 0.9rem;
+			line-height: 0.9rem;
+			/*padding: 0 10rem;*/
+			box-sizing: border-box;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		.line s {
+			margin: 0.1rem 0.35rem 0 0;
+		}
+		
+		.line .tel-img {
+			display: inline-block;
+			width: 0.27rem;
+			height: 0.35rem;
+			background: url(img/shoujihaoma.png) no-repeat center 0;
+			background-size: 100% 100%;
+		}
+		
+		.line .yanzheng-img {
+			display: inline-block;
+			width: 0.27rem;
+			height: 0.35rem;
+			background: url(img/yanzhengma.png) no-repeat center 0;
+			background-size: cover;
+		}
+		
+		.line .psd-img {
+			display: inline-block;
+			width: 0.30rem;
+			height: 0.35rem;
+			background: url(img/mima.png) no-repeat center 0;
+			background-size: cover;
+		}
+		
+		.line p {
+			/*display: flex;
+			justify-content: inherit;
+			align-items: center;*/
+			display: inline-block;
+			width: 4.85rem;
+			height: 0.9rem;
+			line-height: 0.9rem;
+			border-bottom: 0.01rem solid #999999;
+			box-sizing: border-box;
+		}
+		
+		.line .inputval {
+			width: 4.85rem;
+			height: 0.6rem;
+			border: none;
+			box-sizing: border-box;
+		}
+		
+		.psdline p {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		.psdline .inputval {
+			display: inline-block;
+			width: 4.3rem;
+			height: 0.6rem;
+			border: none;
+			box-sizing: border-box;
+		}
+		
+		.psdline p .see {
+			display: inline-block;
+			width: 0.26rem;
+			height: 0.21rem;
+			background-image: url('img/see.png');
+			background-size: contain;
+		}
+		
+		.psdline p .nosee {
+			display: inline-block;
+			width: 0.26rem;
+			height: 0.13rem;
+			background-image: url('img/nosee.png');
+			background-size: contain;
+		}
+		
+		.line .inner {
+			position: relative;
+		}
+		
+		.line input {
+			color: #333333;
+			font-size: 0.26rem;
+		}
+		
+		.requestCode {
+			color: #12599B;
+			font-size: 0.22rem;
+			position: absolute;
+			right: 0.15rem;
+			top: 0;
+		}
+		
+		.noclick {
+			pointer-events: none;
+		}
+		
+		.lastline {
+			margin-top: 0.6rem;
+			position: relative;
+		}
+		
+		.button {
+			position: absolute;
+			right: 0;
+			top: 0.5rem;
+			border: none;
+			width: 1rem;
+			height: 1rem;
+			background: url(img/xiayibu.png) no-repeat center 0;
+			background-size: cover;
+			padding: 0;
+		}
+		
+		#Txtidcode {
+			width: 2.6rem;
+		}
+		
+		.hide {
+			display: none;
+		}
+		
+		#accass {
+			margin-top: 0.3rem;
+			width: 0.3rem;
+			height: 0.3rem;
+		}
+	</style>
+
+	<body>
+		<!-- 正文 -->
+		<div class="banner">
+			<img src="img/logo.png" class="logo" />
+		</div>
+		<div class="formdata">
+			<div class="line">
+				<s class="tel-img"></s>
+				<p>
+					<input type="number" class="inputval" placeholder="请录入手机号码" id="telphone" />
+				</p>
+
+			</div>
+			<div class="line">
+				<s class="yanzheng-img"></s>
+				<p class="inner">
+					<input type="text" class="inputval" placeholder="请输入验证码" id="Txtidcode" class="txtVerification" />
+					<span id="idcode"></span>
+					<img src="img/success.png" class="hide" id="accass" />
+				</p>
+
+			</div>
+			<div class="line psdline">
+				<s class="psd-img"></s>
+				<p>
+					<input type="password" class="inputval" placeholder="设置6-12位登录密码" id="frist" />
+					<s class="nosee"></s>
+				</p>
+
+			</div>
+			<div class="line psdline">
+				<s class="psd-img"></s>
+				<p>
+					<input type="password" class="inputval" placeholder="请再次输入登录密码" id="second" />
+					<s class="nosee"></s>
+				</p>
+
+			</div>
+			<div class="lastline">
+				<button class="button"></button>
+			</div>
+		</div>
+	</body>
+	<script src="js/flexible.js "></script>
+	<script src="js/jquery-1.11.0.js"></script>
+	<script src="js/toastr.min.js"></script>
+	<script src="js/jquery.idcode.js"></script>
+	<script>
+		$.idcode.setCode();
+		$(function() {
+			sessionStorage.clear();
+			var _touxing = ''; //头像img
+			var _nickname = ''; //微信昵称
+			var iserror = true;
+			toastr.options = {
+				timeOut: "3000",
+				positionClass: "toast-center-center"
+			};
+
+			function UrlSearch() {
+				var name, value;
+				var str = location.href; //取得整个地址栏
+				var num = str.indexOf("?")
+				str = str.substr(num + 1); //取得所有参数 stringvar.substr(start [, length ]
+
+				var arr = str.split("&"); //各个参数放到数组里
+				for(var i = 0; i < arr.length; i++) {
+					num = arr[i].indexOf("=");
+					if(num > 0) {
+						name = arr[i].substring(0, num);
+						value = arr[i].substr(num + 1);
+						this[name] = value;
+					}
+				}
+			}
+			var Request = new UrlSearch(); //实例化
+			var _openId = Request.openid;
+			window.sessionStorage.setItem("openid", _openId);
+			$.ajax({
+				type: "post",
+				url: "http://out.ccsc58.cc/DATA_PORT_WECHAT_1.01/Check.php",
+				async: true,
+				data: {
+					OpenId: _openId
+				},
+				dataType: "JSON",
+				success: function(res) {
+					if(res.code == '200') {
+						window.sessionStorage.setItem("Telephone", res.Phone);
+						if(res.data) {
+							var name = res.data.Name;
+							var tel = res.data.Telephone;
+							var address = res.data.Depart + '' + res.data.City + '' + res.data.Area + '' + res.data.Address;
+							var account = res.data.AccountNumber;
+							var addData = {
+								addressname: name,
+								addresstel: tel,
+								address: address,
+								addressaccount: account,
+								
+							};
+							sessionStorage.setItem('SendaddData', JSON.stringify(addData));
+						}
+						window.location.href = 'html/order.html';
+
+					}else if(res.code == 300){
+						window.sessionStorage.setItem("Telephone", res.Phone);
+						window.location.href = 'html/order.html';
+					} else {
+						cunzai();
+					}
+
+				},
+				error: function(err) {
+					console.log(err)
+				}
+			})
+
+			function cunzai() {
+				$.ajax({
+					type: "get",
+					url: "http://www.ccsc58.cc/weixinnew/Wxorder/api/Wxusersinfo.php",
+					async: true,
+					data: {
+						openid: _openId
+					},
+					dataType: "JSON",
+					success: function(res) {
+						if(res.code == '20000') {
+							_touxing = res.list.headimgurl;
+							_nickname = res.list.nickname;
+						} else {
+							toastr.error("没有获取的微信信息");
+						}
+
+					},
+					error: function(err) {
+						console.log(err)
+					}
+
+				});
+			}
+
+			var yanzheng = '';
+			var screenHeight;
+			if(window.innerHeight) {
+				screenHeight = window.innerHeight;
+			} else if((document.body) && (document.body.clientHeight)) {
+				screenHeight = document.body.clientHeight;
+			}
+			$("html,body").height(screenHeight);
+			document.body.addEventListener('touchmove', function(e) { 
+				e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
+			}, {
+				passive: false
+			}); //passive 参数不能省略，用来兼容ios和android
+
+			$('input').blur(function() {
+				$('body,html').animate({
+					scrollTop: 0
+				}, 0);
+			})
+			$(".psdline s:last-child").click(function() {
+				if($(this).attr('class') == 'nosee') {
+					$(this).attr('class', 'see');
+				} else {
+					$(this).attr("class", 'nosee');
+				}
+				if($(this).siblings("input").attr("type") == "text") {
+					$(this).siblings("input")[0].type = "password";
+				} else {
+					$(this).siblings("input")[0].type = "text";
+				}
+			});
+			$('#Txtidcode').bind('input propertychange', function() {
+				if(iserror) {
+					if($(this).val().length == 5) {
+						var IsBy = $.idcode.validateCode();
+						if(IsBy) {
+							$("#ehong-code-tip-ck").text('');
+							$("#accass").show();
+							yanzheng = true;
+						} else {
+							iserror = false;
+							setTimeout(function() {
+								iserror = true
+							}, 3000);
+							toastr.error("验证码输入错误")
+							$("#accass").hide();
+							yanzheng = false;
+						}
+					} else {
+						$("#accass").hide();
+						yanzheng = false;
+					}
+				}
+
+			})
+
+			function isPoneAvailable($poneInput) {
+				var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+				if(!myreg.test($poneInput.val())) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+
+			$(".button").on("click", function() {
+				var _telphone = $("#telphone").val();
+				var _fristpsd = $("#frist").val();
+				var _yanzhengma = $("#Txtidcode").val();
+				var _secondpsd = $("#second").val();
+				if(iserror) {
+					if(_telphone == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("手机号不能为空");
+						$("#telphone").focus();
+					} else if(!isPoneAvailable($("#telphone"))) {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("手机格式错误");
+						$("#telphone").focus();
+					} else if(_yanzhengma == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("验证码不能为空");
+						$("#Txtidcode").focus();
+					} else if(!yanzheng) {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("验证码错误");
+						$("#Txtidcode").focus();
+					} else if(_fristpsd == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("设置密码不能为空");
+						$("#telphone").focus();
+					} else if(_secondpsd == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("再一次确定密码");
+						$("#telphone").focus();
+					} else if(_fristpsd != _secondpsd) {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("两次密码不一致");
+						$("#frist").focus();
+					} else {
+						$.ajax({
+							type: "post",
+							url: "http://out.ccsc58.cc/DATA_PORT_WECHAT_1.01/Bind.php",
+							async: true,
+							data: {
+								Telephone: _telphone,
+								PassWord: _secondpsd,
+								Picture: _touxing,
+								OpenId: _openId,
+								NickName:_nickname
+							},
+							dataType: "JSON",
+							success: function(res) {
+								console.log(res);
+								if(res.code == 200) {
+									window.sessionStorage.setItem("Telephone", _telphone);
+									setTimeout(function() {
+										window.location.href = 'html/order.html';
+									}, 1000);
+								} else {
+									toastr.error(res.msg);
+								}
+
+							},
+							error: function(err) {
+								console.log(err)
+							}
+						});
+
+					}
+
+				}
+
+			})
+
+		})
+	</script>
+
+</html>

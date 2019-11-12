@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>市场信息查询</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<link rel="stylesheet" href="../css/reset.css" type="text/css">
+		<link rel="stylesheet" href="../css/Market.css" type="text/css" />
+
+	</head>
+	<style>
+
+	</style>
+
+	<body>
+		<div class="header_content">
+			<div class="search-content">
+				<div class="father-search-content">
+					<input type="text" placeholder="客户搜索" class="search-input" />
+					<img src="../img/soushuo.png" class="search-img" />
+					<img src="../img/delete_search.png" class="delete-img hide" />
+					<s class="split-line hide"></s>
+					<span> </span>
+				</div>
+
+				<img src="../img/addmarket.png" class="add-img" />
+			</div>
+		</div>
+		<div class="content-market">
+			<ul>
+				<!--<li class="market-item">
+					<div class="market-right">
+						<span class="username">菲六</span>
+					</div>
+					<div class="market-left">
+						<p class="inner-line"> <span class="company">中集冷云(北京)供应链管理有限公司</span></p>
+						<p class="inner-line"><span class="address">北京市顺义区南彩三街茂化工厂1号楼2层201室中集冷</span></p>
+					</div>
+
+				</li>-->
+
+			</ul>
+		</div>
+
+
+	</body>
+	<script src="../js/jquery-1.11.0.js"></script>
+	<script>
+		$(document).ready(function() {
+			var ScreenWidth = document.documentElement.clientWidth || document.body.clientWidth;
+			var ScreenHeight = document.documentElement.clientHeight || document.body.clientHeight;
+			document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + "px";
+			$(".search-input").keyup(function() {
+				console.log(122)
+			})
+			$(".search-input").bind('input propertychange', function() {
+				var inputValue = $(this).val();
+				if(inputValue.length > 0) {
+					$(this).css("padding-left", "14px");
+					$(this).parent().children('.search-img').removeClass("searchLeft")
+					$(this).parent().children('.search-img').attr('src', '../img/search.png');
+					$(this).parent().children('.search-img').addClass("searchRight");
+					$(this).parent().children('.split-line').show();
+					$(this).parent().children('.delete-img').show();
+				} else {
+					//					 window.location.reload();
+					$('ul').html("");
+					$(this).css("padding-left", "30px");
+					$(this).parent().children('.search-img').removeClass("searchRight")
+					$(this).parent().children('.search-img').attr('src', '../img/soushuo.png');
+					$(this).parent().children('.search-img').addClass("searchLeft");
+					$(this).parent().children('.split-line').hide();
+					$(this).parent().children('.delete-img').hide();
+
+				}
+
+			});
+			$(".search-img").on("click", function() {
+				let inputval = $(this).parent().children('input').val();
+				if(inputval != '') {
+					seaarchCompany(inputval);
+				} else {
+					$('.content-market').show();
+					$('#nothing-content').addClass('hide');
+					$('.content-market').hide();
+					$('#nothing-content').removeClass('hide');
+				}
+
+			})
+
+			function seaarchCompany(keyword) {
+				$('ul').html("");
+				$.ajax({
+					type: "post",
+					url: "http://out.ccsc58.cc/DATA_PORT_CRM_1.01/MarketSearch.php",
+					data: {
+						Company: keyword
+					},
+					dataType: "json",
+					success: function(res) {
+						if(res.code == "200") {
+							$.each(res.data, function(index, value) {
+								let name = value.SaleName;
+								if(name == null || name == '') {
+									name = '暂未分配';
+								}
+								let address = value.Address;
+								if(address == null || address == '') {
+									address = '暂未录入';
+								}
+								let str = `<li class="market-item">
+					                     <div class="market-right"><span class="username">${name}</span></div>
+										<div class="market-left">
+											<p class="inner-line"> <span class="company">${value.Company}</span></p>
+											<p class="inner-line"><span class="address">${address}</span></p>
+										</div>
+				                      </li>`;
+								$('ul').append(str);
+							})
+						} else {
+							alert(res.msg);
+						}
+
+					},
+					error: function(err) {
+						console.log(err)
+					},
+				});
+			}
+
+			$(".delete-img").on("click", function() {
+				$('ul').html("");
+				$(this).parent().find('input').css("padding-left", "20px");
+				$(this).parent().children('input').val('');
+				$(this).hide();
+				$(this).parent().children('.search-img').removeClass("searchRight")
+				$(this).parent().children('.search-img').attr('src', '../img/soushuo.png');
+				$(this).parent().children('.search-img').addClass("searchLeft");
+				$(this).parent().children('.split-line').hide();
+				$(this).parent().children('.delete-img').hide();
+			})
+
+			$(".add-img").on("click", function() {
+				window.location.href = 'SaleInfoInput.html'
+
+			})
+		})
+	</script>
+
+</html>

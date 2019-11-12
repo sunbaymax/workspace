@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="format-detection" content="telephone=no">
+		<title>中集冷云（北京）供应链管理有限公司</title>
+		<link type="text/css" rel="stylesheet" href="../css/index.css" />
+		<link type="text/css" rel="stylesheet" href="css/sugg.css" />
+		
+	</head>
+	<style>
+		.duowenden{
+			width: 100%;
+			height: 120px;
+			line-height: 120px;
+			border: none;
+			margin-top: 21px;
+			margin-bottom: 10px;
+		}
+		.details_wenti{
+			width: 305px;
+			height: 120px;
+			margin-left: 47px;
+			border: 1px solid #8d8d8d;
+			padding-left: 8px;
+		}
+		.dianji{
+			width: 100%;
+			height: 79px;
+		}
+		.dianji img{
+			width: 79px;
+			height: 79px;
+			margin-left: 47px;
+		}
+	</style>
+	<body>
+		<div class="title">
+			<img src="img/back.png" alt="返回" />
+			<a class="back_login" href="login.html">返回</a>
+			<h3 class="title_h">意见反馈</h3>
+		</div>
+		<div class="centent">
+			<img  src="img/touxiang.jpg"  alt="微信头像"/>
+			<span>昵称</span>
+			<input type="text"  class="wechat_name" name="wechatname"/>
+		</div>
+		<div class="centent_p">
+			<p class="ti_p">请在下方如实填写您在使用产品遇到的问题！</p>
+		</div>
+		<div class="data_center">
+			<form>
+				<p class="form_centect"><img class="t1" src="img/product.png" /><input class="input_data" type="text" placeholder="请输入产品名称（设备、系统或冷藏箱）" /> </p>
+				<p class="form_centect"><img class="t1" src="img/time.png" /><input class="input_data" type="text" placeholder="请选择发生问题时间"  id="history_start_time" readonly onFocus="WdatePicker({startDate:'%y-%M-{%d-1} %H:%m:%s',dateFmt:'yyyy-MM-dd HH:mm:ss'})" /> </p>
+			    <p class="form_centect duowenden"><textarea class="details_wenti" placeholder="请输入具体描述"></textarea></p> 
+			    <p class="dianji"> <label for="file"><img src="img/upload.png"/></label></p>
+				<p class="touxiang"><input type="file" id="file" name="" style="display: none"/></p>
+				<div id="image" style="width:79px;height:79px; background:#CCCCCC; margin-left: 47px;">
+				    <img src="img/upload.png" height="79px" width="79px" border="5px"/>
+				</div>
+			    
+			</form>
+		</div>
+		 <br clear="both" />
+		<div class="btn"><button>下一步</button></div>
+	</body>
+	<script>
+    document.getElementById('file').onchange = function() {
+        var imgFile = this.files[0];
+        var fr = new FileReader();
+        fr.onload = function() {
+//      	document.getElementById('file').style.display =="none";
+            document.getElementById('image').getElementsByTagName('img')[0].src = fr.result;
+            
+        };
+	        fr.readAsDataURL(imgFile);
+	    };
+	</script>
+
+	<script src="../My97DatePicker/WdatePicker.js" type="text/javascript" charset="utf-8"></script>
+</html>

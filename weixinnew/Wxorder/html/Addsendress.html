@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<meta content="email=no" name="format-detection">
+		<meta name="description" content="中集冷云冷链运输微信下单平台" />
+		<meta name="keywords" content="微信下单，冷链运输 " />
+		<meta name=" author " content="中集冷云 " />
+		<title>新增寄件地址</title>
+		<link rel="stylesheet " href="../css/base.css ">
+		<link rel="stylesheet " href="../css/InfoInput.css">
+		<link rel="stylesheet " href="../css/toastr.min.css">
+		<link rel="stylesheet" href="../css/ydui.css" type="text/css">
+	</head>
+	<style>
+
+	</style>
+
+	<body>
+		<div class="container">
+			<div class="titile">
+				<img src="../img/addsend.png" class="addsendimg" />
+				<h3 class="addsendimgh3">填写寄件人地址</h3>
+			</div>
+			<div class="content">
+				<ul class="inner">
+					<li>
+						<s class="tu1"></s><input type="text" class="inputval" placeholder="客户账号" id="accout" />
+					</li>
+					<li class="line2">
+						<s class="tu2"></s><input type="text" class="inputval" placeholder="姓名" id="username" />
+						<a href="addressbook.html" class="chooseaddbook">地址簿</a>
+					</li>
+					<li>
+						<s class="tu3"></s><input type="text" class="inputval" placeholder="手机号" id="telphone" />
+					</li>
+					<li>
+						<s class="tu4"></s><input type="text" class="inputval" placeholder="公司名称" id="company" />
+					</li>
+					<li class="line5">
+						<s class="tu5"></s><input type="text"  readonly="readonly" class="inputval" placeholder="城市/区域" id="J_Address" readonly="readonly" /><img src="../img/xiala.png" class="xiala" />
+					</li>
+					<li>
+						<s class="tu6"></s><input type="text" class="inputval" placeholder="详细地址" id="descaddress" />
+					</li>
+				</ul>
+
+			</div>
+			<div class="operation">
+
+				<p>
+					<img src="../img/isno_moren.png" class="isno_moren" idi='0' />
+					<span class="wen">设为默认寄件地址</span></p>
+				<p>
+					<span class="resert">清空当前信息</span>
+				</p>
+			</div>
+			<div class="btn">
+				<button class="btn-ok">保存</button>
+			</div>
+		</div>
+	</body>
+	<script src="../js/flexible.js "></script>
+	<script src="../js/jquery-1.11.0.js"></script>
+	<script src="../js/toastr.min.js"></script>
+	<script type="text/javascript" src="../js/ydui.citys.js"></script>
+	<script type="text/javascript" src="../js/ydui.js"></script>
+	<script>
+		$(function() {
+			toastr.options = {
+				timeOut: "3000",
+				positionClass: "toast-center-center"
+			};
+
+			function UrlSearch() {
+				var name, value;
+				var str = location.href; //取得整个地址栏
+				var num = str.indexOf("?")
+				str = str.substr(num + 1); //取得所有参数   stringvar.substr(start [, length ]
+				var arr = str.split("&"); //各个参数放到数组里
+				for(var i = 0; i < arr.length; i++) {
+					num = arr[i].indexOf("=");
+					if(num > 0) {
+						name = arr[i].substring(0, num);
+						value = arr[i].substr(num + 1);
+						this[name] = value;
+					}
+				}
+			}
+			var telephone = sessionStorage.getItem('Telephone');
+			var iserror = true;
+			var Request = new UrlSearch(); //实例化
+			! function() {
+				var $target = $('#J_Address');
+				$target.citySelect();
+
+				$target.on('click', function(event) {
+					event.stopPropagation();
+					$target.citySelect('open');
+				});
+				$('html , body').animate({
+					scrollTop: 0
+				}, 'slow');
+
+				$target.on('done.ydui.cityselect', function(ret) {
+					$(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+				});
+			}();
+			$('.line5 .xiala').on("click", function() {
+				$('#J_Address').click()
+			})
+
+			$('.operation p:first-child img').on("click", function() {
+				if($(this).attr('class') == 'isno_moren') {
+					$(this).attr('src', '../img/is_moren.png');
+					$(this).attr('class', 'is_moren');
+					$(this).attr('idi', '1');
+				} else {
+					$(this).attr('src', '../img/isno_moren.png');
+					$(this).attr('class', 'isno_moren');
+					$(this).attr('idi', '0');
+				}
+			})
+			//清除表单
+			$('.resert').on("click", function() {
+				$("input").each(function() {
+					$(this).val('');
+				});
+			})
+			$('.btn-ok').on("click", function() {
+				if(iserror) {
+					var _AccountNumber = $('#accout').val();
+					var _Name = $('#username').val();
+					var _Telephone = $('#telphone').val();
+					var _Company = $('#company').val();
+					var _Addree = $('#descaddress').val();
+					var inputAddress = $('#J_Address').val();
+					var ismoren = $('.is_moren').attr('idi');
+					var arraddress = inputAddress.split(' ');
+					var _Depart = arraddress[0];
+					var _City = arraddress[1];
+					var _Area = '';
+					var _Areaqu = '';
+					if(_Depart.indexOf('北京') != -1) {
+						_Depart = '北京';
+						_City = '北京市';
+						_Area = arraddress[1];
+						_Areaqu = arraddress[2];
+					} else if(_Depart.indexOf('上海') != -1) {
+						_Depart = '上海';
+						_City = '上海市';
+						_Area = arraddress[1];
+						_Areaqu = arraddress[2];
+					} else if(_Depart.indexOf('重庆') != -1) {
+						_Depart = '重庆';
+						_City = '重庆市';
+						_Area = arraddress[1];
+						_Areaqu = arraddress[2];
+					} else if(_Depart.indexOf('天津') != -1) {
+						_Depart = '天津';
+						_City = '天津市';
+						_Area = arraddress[1];
+						_Areaqu = arraddress[2];
+					} else {
+						_Depart = arraddress[0];
+						_City = arraddress[1];
+						_Area = arraddress[2];
+						_Areaqu = '';
+					}
+					if(_AccountNumber == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("客户账号不能为空")
+						$("#accout").focus();
+					} else if(_Name == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("联系人姓名不能为空")
+						$("#username").focus();
+					} else if(_Telephone == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("联系人手机号不能为空")
+						$("#telphone").focus();
+					} else if(_Company == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("公司名称不能为空")
+						$("#company").focus();
+					} else if(inputAddress == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("所选地区不能为空")
+						$("#J_Address").focus();
+					} else if(_Addree == '') {
+						iserror = false;
+						setTimeout(function() {
+							iserror = true
+						}, 3000);
+						toastr.error("详细地址不能为空")
+						$("#descaddress").focus();
+					} else {
+						$.ajax({
+							type: "post",
+							url: "http://out.ccsc58.cc/DATA_PORT_WECHAT_1.01/AddressBook.php",
+							data: {
+								State: "add",
+								Name: _Name,
+								Company: _Company,
+								Depart: _Depart,
+								City: _City,
+								Address: _Areaqu + _Addree,
+								Telephone: _Telephone,
+								UserNumber: telephone,
+								AccountNumber: _AccountNumber,
+								IsDefault: ismoren,
+								Area: _Area
+							},
+							dataType: "json",
+							success: function(res) {
+								toastr.success('新增寄件人地址成功');
+								if(res.code == 200) {
+									setTimeout(function() {
+										window.location.href = 'addressbook.html';
+									}, 1000);
+
+								} else {
+									toastr.error(res.msg);
+									$(this).attr('disabled', true);
+									$(this).css({
+										'background-color': '#a0a0a0',
+										"color": "#ffffff"
+									})
+									return false;
+								}
+							},
+							error: function(err) {
+								console.log(err)
+							}
+						})
+					}
+				}
+				
+				console.log(_AccountNumber + '.' + _Name + '.' + _Telephone + '.' + _Company + '.' + _Depart + '.' + _City + '.' + _Area + '.' + _Areaqu + _Addree)
+				//window.location.href = 'order.html'
+			})
+
+		})
+	</script>
+
+</html>

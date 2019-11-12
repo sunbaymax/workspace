@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no" name="format-detection">
+		<meta content="email=no" name="format-detection">
+		<meta name="description" content="中集冷云冷链运输微信下单平台" />
+		<meta name="keywords" content="微信下单，冷链运输 " />
+		<meta name=" author " content="中集冷云 " />
+		<title>我的订单</title>
+		<link rel="stylesheet " href="../css/base.css ">
+		<link rel="stylesheet " href="../css/toastr.min.css">
+		<link rel="stylesheet " href="../css/index.css">
+	</head>
+	<style>
+		.content {
+			margin-top: 1.06rem;
+			width: 100%;
+			height: auto;
+			padding: 0 0.3rem;
+			box-sizing: border-box;
+		}
+		
+		.content ul {}
+		
+		.content ul li {
+			margin: 0.1rem 0;
+			padding: 0 0.2rem;
+			box-sizing: border-box;
+			height: 2.5rem;
+			width: 100%;
+			background: #FFFFFF;
+			font-size: 0.22rem;
+			color: #666666;
+		}
+		
+		ul li .order-top {
+			display: flex;
+			justify-content: space-between;
+			height: 0.6rem;
+			align-items: center;
+			border-bottom: 1px solid #E7E7E7;
+			box-sizing: border-box;
+		}
+		
+		ul li .order-center {
+			padding: 0 1.15rem;
+			display: flex;
+			height: 1.3rem;
+			border-bottom: 1px solid #E7E7E7;
+			box-sizing: border-box;
+		}
+		
+		li .order-center .order-center-left {
+			display: flex;
+			flex-direction: column;
+		}
+		
+		.order-center .order-center-left .startcity {
+			font-size: 0.28rem;
+			color: #333333;
+			display: inline-block;
+			width: 1.2rem;
+			text-align: center;
+			font-weight: bold;
+			margin: 0.2rem 0 0;
+		}
+		
+		.order-center .order-center-left .sendname {
+			display: inline-block;
+			width: 1.2rem;
+			text-align: center;
+			margin: 0.2rem 0 0.15rem;
+		}
+		
+		li .order-center .order-center-center {
+			display: flex;
+			flex-direction: column;
+		}
+		
+		.order-center .order-center-center img {
+			margin: 0.35rem 0 0.2rem;
+			display: block;
+			width: 2rem;
+			height: auto;
+		}
+		
+		.order-center .order-center-center span {
+			display: block;
+			width: 2rem;
+			text-align: center;
+			color: #FF0000;
+		}
+		
+		li .order-center .order-center-right {
+			display: flex;
+			flex-direction: column;
+		}
+		.order-center .order-center-right .getcity{
+			font-size: 0.28rem;
+			color: #333333;
+			display: inline-block;
+			width: 1.2rem;
+			text-align: center;
+			font-weight: bold;
+			margin: 0.2rem 0 0;
+		}
+		.order-center .order-center-right .getname{
+			display: inline-block;
+			width: 1.2rem;
+			text-align: center;
+			margin: 0.2rem 0 0.15rem;
+		}
+		li  .order-footer {
+			display: flex;
+			height: 0.6rem;
+			width: 100%;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.content ul .nomore{
+			margin-top: 0.1rem;
+			height: 0.3rem;
+			background: none;
+			text-align: center;
+		}
+		.navcontent{
+			height: 0.65rem;
+			width: 100%;
+			text-align: center;
+			position: fixed;
+			bottom: 0.6rem;
+			left: 0;
+		}
+		.navcontent .nav{
+			width: 0.65rem;
+			height: 0.65rem;
+		}
+	</style>
+
+	<body>
+		<div class="top">
+			<div class="topleft">
+				<input type="text" class="inputval" placeholder="请录入姓名/电话" />
+				<img src="../img/delete_search.png" class="resert" />
+				<button class="search_ok">搜索</button>
+			</div>
+
+			<div class="topright">
+				<button class="exit">取消</button>
+			</div>
+		</div>
+		<div class="content">
+			<ul>
+				<li>
+					<div class="order-top">
+						<span>运单号:<label>1001255211</label></span>
+						<span>签单时间:<label>2019-05-27</label></span>
+					</div>
+					<div class="order-center">
+						<div class="order-center-left">
+							<span class="startcity city">石家庄</span>
+							<span class="sendname">张三</span>
+						</div>
+						<div class="order-center-center">
+							<img src="../img/Progressbar.png" />
+							<span>已下单</span>
+						</div>
+						<div class="order-center-right">
+							<span class="getcity city">北京市</span>
+							<span class="getname">李四</span>
+						</div>
+					</div>
+					<div class="order-footer">
+						<span>客户账号:<label>655214</label></span>
+						<span>取消订单</span>
+					</div>
+				</li>
+				<li class="nomore">没有更多信息拉~</li>
+			</ul>
+			<div class="navcontent">
+				<a href="order.html">
+					<img src="../img/Navigation.png" class="nav" />
+				</a>
+			</div>
+		</div>
+		<script src="../js/flexible.js "></script>
+		<script src="../js/jquery-1.11.0.js"></script>
+		<script src="../js/toastr.min.js"></script>
+		<script>
+			$(function(){
+				$('.exit').on("click",function(){
+					history.go(-1);
+				})
+			})
+		</script>
+	</body>
+
+</html>

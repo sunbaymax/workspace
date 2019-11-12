@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+ 
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>Document</title>
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<style type="text/css">
+			.div1 {
+				width: 100%;
+				height: 3000px;
+				background: #2AABD2;
+				z-index: 100;
+			}
+ 
+			.div2 {
+				width: 50px;
+				height: 50px;
+				z-index: 200;
+				background: orangered;
+			}
+ 
+			.cover {
+				height: 100%;
+				width: 100%;
+				background: #000000;
+				opacity: 0.5;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 300;
+				display: none;
+			}
+ 
+			.window {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				height: 316px;
+				width: 70%;
+				margin: -158px 0 0 -35%;
+				background-color: white;
+				z-index: 20000;
+				border-radius: 9px;
+				display: none;
+			}
+		</style>
+		<script type="text/javascript">
+		</script>
+	</head>
+	<body>
+		<div class="div1">
+			<div class="div2"></div>
+		</div>
+		<div class="cover"></div>
+		<div class="window">
+			<span class="close">关闭弹窗</span>
+		</div>
+ 
+	</body>
+	<script>
+		//方法一:当遮罩层出现时，禁止鼠标滚轮滚动和touchmove事件，比较暴力
+		/* $(document).on("click", ".div2", function() {
+			$("body").css("overflow", "hidden");
+			$(".cover").css("display", "block");
+			$(".window").css("display", "block");
+		})
+		$(document).on("click", ".close", function() {
+			$(".cover").css("display", "none");
+			$(".window").css("display", "none");
+			$("body").css("overflow", "scroll");
+		}) */
+		//方法二:当遮罩层出现时，禁止触屏滑动事件，但是没有禁止鼠标滚轮滚动
+		$(document).on("click", ".div2", function() {
+			$(".cover").css("display", "block");
+			$(".window").css("display", "block");
+			$(".cover").on("touchmove", function(e) {
+				e.preventDefault();
+			})
+		}) 
+		$(document).on("click", ".close", function() {
+			$(".cover").css("display", "none");
+			$(".window").css("display", "none");
+		})
+        //方法三：当遮罩层出来时，将背景图层添加一个position：fixed属性，但是可能会发生位移
+        /*$(document).on("click", ".div2", function() {
+			$(".cover").css("display", "block");
+			$(".window").css("display", "block");
+			$(".body").css("position","fixed");
+		}) 
+		$(document).on("click", ".close", function() {
+			$(".cover").css("display", "none");
+			$(".window").css("display", "none");
+            $(".body").css("position","initial");
+		})*/
+	</script>
+</html>
